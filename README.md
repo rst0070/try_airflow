@@ -1,3 +1,5 @@
+## Execute airflow with docker compose
+  
 __CeleryExecutor to LocalExecutor__  
 For simplicity, set the `x-airflow-common:environment:AIRFLOW__CORE__EXECUTOR` as LocalExecutor rather then Celery Executor. 
 So that, we dont need `x-airflow-common:environment:AIRFLOW__CELERY__RESULT_BACKEND` and `x-airflow-common:environment:AIRFLOW__CELERY__BROKER_URL` settings. 
@@ -49,4 +51,95 @@ docker compose up -d
 
 ## basic architecture
 
-## Bash Operator
+## DAG with Bash Operator
+just make a python file including below code in `dag` directory.  
+If you check the airflow web app after that, you would see the new dag
+```python
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+
+default_args = {
+    'owner'         : 'rst0070',
+    'retries'       : 5,
+    'retry_delay'   : timedelta(minutes=2)
+}
+
+with DAG(
+    dag_id = 'first_dag_v3',
+    default_args=default_args,
+    description= 'My first airflow dag',
+    start_date = datetime(2024, 5, 22),
+    schedule_interval='@daily'
+) as dag:
+    
+    task1 = BashOperator(
+        task_id = 'task1',
+        bash_command='echo Hello world, this is my first task!'
+    )
+    
+    task2 = BashOperator(
+        task_id = 'task2',
+        bash_command='echo This is my second task! this will be executed after task1'
+    )
+    
+    task3 = BashOperator(
+        task_id = 'task3',
+        bash_command='echo This is my third task! this will be executed after task1 and parallel as task2'
+    )
+    
+    ##
+    ## dependency method 1
+    ##
+    # task1.set_downstream(task2)
+    # task1.set_downstream(task3)
+    ##
+    ## dependency method 2
+    ##
+    # task1.set_downstream([task2, task3])
+    ##
+    ## dependency method 3
+    ##
+    # task1 >> task2
+    # task1 >> task3
+    ##
+    ## dependency method 4
+    ##
+    task1 >> [task2, task3]
+    
+```
+
+## DAG python operator
+just use different operator
+```python
+from airflow import DAG
+from datetime import datetime, timedelta
+from airflow.operators.python import PythonOperator
+
+default_arg = {
+    'owner'         : 'rst0070',
+    'retries'       : 5,
+    'retry_delay'   : timedelta(minutes=2)
+}
+
+def printFunc(message:str):
+    print(message)
+
+with DAG(
+    default_args=default_arg,
+    dag_id='b_python_operator',
+    description='asdasd0',
+    start_date=datetime(2024, 5, 21),
+    schedule_interval='@daily'
+) as  dag:
+    
+    task1 = PythonOperator(
+        task_id = 'printFunc',
+        python_callable=printFunc,
+        op_kwargs={'message': 'Hello world!'}
+    )
+```
+
+## XCOM - passing small parameters
+
+## TASK Flow API - simplify the code using annotation

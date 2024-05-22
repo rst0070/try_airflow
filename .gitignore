@@ -1,4 +1,4 @@
 config/**
-dags/**
 logs/**
 plugins/**
+**/__pycache__**
