@@ -144,3 +144,13 @@ with DAG(
 
 
 ## TASK Flow API - simplify the code using annotation
+
+## Catch-up and backfill
+
+## Connect to PostgreSQL  
+__in the yaml__  
+- set property `services:postgres:ports` as `5432:5432`
+- re-start the service by command `docker compose up -d --no-deps --build postgres`  
+  
+after above things, you can just connect to the database with other tools  
+
