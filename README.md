@@ -77,7 +77,7 @@ __Basic Architecture__
 Check the detailed concepts [here](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/overview.html)    
 
 ### 2.2. Task life cycle
-<img src="https://airflow.apache.org/docs/apache-airflow/stable/_images/task_lifecycle_diagram.png"  width="700"/>  
+<img src="https://airflow.apache.org/docs/apache-airflow/stable/_images/task_lifecycle_diagram.png"  width="700" style="background-color: white;"/>  
 
 Check the detailed concepts [here](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html)  
 
