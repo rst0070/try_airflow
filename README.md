@@ -14,7 +14,8 @@ I learned it from [coder2j's youtube video](https://youtu.be/K9AnJ9_ZAXE?si=BnTt
 10. [Sensor Operator with AWS S3](#10-sensor-operator-with-aws-s3)
   
 ## 1. Execute airflow with docker compose
-  
+You can check official explaination about airflow-docker-compose installation from [here](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#fetching-docker-compose-yaml).  
+
 ### 1.1 Simplify: CeleryExecutor to LocalExecutor
 For simplicity, use LocalExecutor. To do that, we need to modify `docker-compose.yaml` file.  
 - change the `x-airflow-common:environment:AIRFLOW__CORE__EXECUTOR` to `LocalExecutor` from `Celery Executor`.  
